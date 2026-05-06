@@ -114,6 +114,54 @@
       "description": "Precomputed summaries and result files included for artifact inspection.",
       "containedIn": "results/",
       "includes": "*"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "profiles_sample_file",
+      "name": "profiles_sample.jsonl",
+      "description": "Anonymized user profile sample records.",
+      "contentUrl": "data/movielens_smoke/gender/profiles_sample.jsonl",
+      "encodingFormat": "application/jsonlines"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "pairs_sample_file",
+      "name": "pairs_sample.jsonl",
+      "description": "Counterfactual prompt-pair sample records.",
+      "contentUrl": "data/movielens_smoke/gender/pairs_sample.jsonl",
+      "encodingFormat": "application/jsonlines"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "ranked_lists_sample_file",
+      "name": "ranked_lists_sample.jsonl",
+      "description": "Parsed ranked recommendation-list sample records.",
+      "contentUrl": "data/movielens_smoke/gender/ranked_lists_sample.jsonl",
+      "encodingFormat": "application/jsonlines"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "output_distance_sample_file",
+      "name": "output_distance_sample.eval.jsonl",
+      "description": "Observable output-shift sample records.",
+      "contentUrl": "data/movielens_smoke/gender/output_distance_sample.eval.jsonl",
+      "encodingFormat": "application/jsonlines"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "internal_distance_sample_file",
+      "name": "internal_distance_sample.eval.jsonl",
+      "description": "Internal representation-shift sample records.",
+      "contentUrl": "data/movielens_smoke/gender/internal_distance_sample.eval.jsonl",
+      "encodingFormat": "application/jsonlines"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "quadrants_sample_file",
+      "name": "quadrants_sample.jsonl",
+      "description": "Hidden-output quadrant assignment sample records.",
+      "contentUrl": "data/movielens_smoke/gender/quadrants_sample.jsonl",
+      "encodingFormat": "application/jsonlines"
     }
   ],
   "recordSet": [
@@ -127,21 +175,44 @@
           "@type": "cr:Field",
           "name": "user_id",
           "description": "An anonymized user identifier.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.user_id"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "top_rated_movies",
           "description": "A list of top-rated profile items used as recommendation preference signals.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.top_rated_movies"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "genre_summary",
           "description": "Optional normalized genre-frequency summary for the profile.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.genre_summary"
+            }
+          }
         }
-      ]
+      ],
+      "source": {
+        "fileObject": {
+          "@id": "profiles_sample_file"
+        },
+        "extract": {
+          "jsonPath": "$"
+        }
+      }
     },
     {
       "@type": "cr:RecordSet",
@@ -153,33 +224,66 @@
           "@type": "cr:Field",
           "name": "user_id",
           "description": "An anonymized user identifier.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.user_id"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "variant_a",
           "description": "Name of the first counterfactual variant.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.variant_a"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "variant_b",
           "description": "Name of the second counterfactual variant.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.variant_b"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "prompt_a",
           "description": "Prompt under the first counterfactual variant.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.prompt_a"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "prompt_b",
           "description": "Prompt under the second counterfactual variant.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.prompt_b"
+            }
+          }
         }
-      ]
+      ],
+      "source": {
+        "fileObject": {
+          "@id": "pairs_sample_file"
+        },
+        "extract": {
+          "jsonPath": "$"
+        }
+      }
     },
     {
       "@type": "cr:RecordSet",
@@ -191,27 +295,55 @@
           "@type": "cr:Field",
           "name": "user_id",
           "description": "An anonymized user identifier.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.user_id"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "variant",
           "description": "Counterfactual variant name.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.variant"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "ranked_titles",
           "description": "Parsed top-K recommendation titles.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.ranked_titles"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "parse_ok",
           "description": "Whether exactly K titles were recovered from the generated output.",
-          "dataType": "sc:Boolean"
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "jsonPath": "$.parse_ok"
+            }
+          }
         }
-      ]
+      ],
+      "source": {
+        "fileObject": {
+          "@id": "ranked_lists_sample_file"
+        },
+        "extract": {
+          "jsonPath": "$"
+        }
+      }
     },
     {
       "@type": "cr:RecordSet",
@@ -223,15 +355,33 @@
           "@type": "cr:Field",
           "name": "user_id",
           "description": "An anonymized user identifier.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.user_id"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "d_out",
           "description": "Observable output shift score.",
-          "dataType": "sc:Float"
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "jsonPath": "$.d_out"
+            }
+          }
         }
-      ]
+      ],
+      "source": {
+        "fileObject": {
+          "@id": "output_distance_sample_file"
+        },
+        "extract": {
+          "jsonPath": "$"
+        }
+      }
     },
     {
       "@type": "cr:RecordSet",
@@ -243,15 +393,33 @@
           "@type": "cr:Field",
           "name": "user_id",
           "description": "An anonymized user identifier.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.user_id"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "d_in",
           "description": "Aggregated internal shift score.",
-          "dataType": "sc:Float"
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "jsonPath": "$.d_in"
+            }
+          }
         }
-      ]
+      ],
+      "source": {
+        "fileObject": {
+          "@id": "internal_distance_sample_file"
+        },
+        "extract": {
+          "jsonPath": "$"
+        }
+      }
     },
     {
       "@type": "cr:RecordSet",
@@ -263,27 +431,55 @@
           "@type": "cr:Field",
           "name": "user_id",
           "description": "An anonymized user identifier.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.user_id"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "quadrant",
           "description": "Quadrant label in the internal-output shift space.",
-          "dataType": "sc:Text"
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "jsonPath": "$.quadrant"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "d_out",
           "description": "Observable output shift score.",
-          "dataType": "sc:Float"
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "jsonPath": "$.d_out"
+            }
+          }
         },
         {
           "@type": "cr:Field",
           "name": "d_in",
           "description": "Internal representation shift score.",
-          "dataType": "sc:Float"
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "jsonPath": "$.d_in"
+            }
+          }
         }
-      ]
+      ],
+      "source": {
+        "fileObject": {
+          "@id": "quadrants_sample_file"
+        },
+        "extract": {
+          "jsonPath": "$"
+        }
+      }
     }
   ],
   "rai:dataCollection": {
