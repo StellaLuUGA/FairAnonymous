@@ -1,0 +1,311 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "sc": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "FairGap Smoke Artifact",
+  "alternateName": "FairGap lightweight review package",
+  "description": "A lightweight smoke-test artifact for FairGap, a benchmark pipeline for auditing hidden-output fairness gaps in LLM-based recommendation. The artifact contains cleaned reproduction scripts, small anonymized sample files, and precomputed metric outputs for validating the metric pipeline without rerunning full LLM generation or hidden-state extraction.",
+  "url": "https://anonymous.4open.science/r/FairAnonymous-BBE6/",
+  "version": "1.0.0",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "isAccessibleForFree": true,
+  "isLiveDataset": false,
+  "keywords": [
+    "large language models",
+    "fairness evaluation",
+    "recommendation",
+    "counterfactual prompts",
+    "hidden representations",
+    "benchmark",
+    "responsible AI"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Anonymous Authors"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Anonymous Authors"
+  },
+  "datePublished": "2026",
+  "inLanguage": "en",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "README",
+      "name": "README.md",
+      "description": "Artifact overview and reproduction instructions.",
+      "contentUrl": "README.md",
+      "encodingFormat": "text/markdown"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "requirements",
+      "name": "requirements.txt",
+      "description": "Python dependencies for the smoke-test artifact.",
+      "contentUrl": "requirements.txt",
+      "encodingFormat": "text/plain"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "scripts",
+      "name": "scripts",
+      "description": "Cleaned reproduction scripts for the FairGap pipeline.",
+      "containedIn": "scripts/",
+      "includes": "*.py",
+      "encodingFormat": "text/x-python"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "movielens_gender_smoke",
+      "name": "MovieLens gender smoke files",
+      "description": "Anonymized sample files for a MovieLens/Gender smoke-test run.",
+      "containedIn": "data/movielens_smoke/gender/",
+      "includes": "*",
+      "encodingFormat": "application/jsonlines"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "results",
+      "name": "precomputed results",
+      "description": "Precomputed summaries and result files included for artifact inspection.",
+      "containedIn": "results/",
+      "includes": "*"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "profiles_sample",
+      "name": "profiles_sample",
+      "description": "Anonymized user profile records used to construct counterfactual prompts.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "user_id",
+          "description": "An anonymized user identifier.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "top_rated_movies",
+          "description": "A list of top-rated profile items used as recommendation preference signals.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "genre_summary",
+          "description": "Optional normalized genre-frequency summary for the profile.",
+          "dataType": "sc:Text"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pairs_sample",
+      "name": "pairs_sample",
+      "description": "Counterfactual prompt pairs differing only in the protected-attribute cue.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "user_id",
+          "description": "An anonymized user identifier.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "variant_a",
+          "description": "Name of the first counterfactual variant.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "variant_b",
+          "description": "Name of the second counterfactual variant.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "prompt_a",
+          "description": "Prompt under the first counterfactual variant.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "prompt_b",
+          "description": "Prompt under the second counterfactual variant.",
+          "dataType": "sc:Text"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ranked_lists_sample",
+      "name": "ranked_lists_sample",
+      "description": "Parsed ranked recommendation lists from generated LLM outputs.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "user_id",
+          "description": "An anonymized user identifier.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "variant",
+          "description": "Counterfactual variant name.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "ranked_titles",
+          "description": "Parsed top-K recommendation titles.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "parse_ok",
+          "description": "Whether exactly K titles were recovered from the generated output.",
+          "dataType": "sc:Boolean"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "output_distance_sample",
+      "name": "output_distance_sample",
+      "description": "Observable output shift scores computed as 1 minus normalized RBO@K between counterfactual recommendation lists.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "user_id",
+          "description": "An anonymized user identifier.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "d_out",
+          "description": "Observable output shift score.",
+          "dataType": "sc:Float"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "internal_distance_sample",
+      "name": "internal_distance_sample",
+      "description": "Aggregated internal representation shift scores.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "user_id",
+          "description": "An anonymized user identifier.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "d_in",
+          "description": "Aggregated internal shift score.",
+          "dataType": "sc:Float"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "quadrants_sample",
+      "name": "quadrants_sample",
+      "description": "Joint hidden-output quadrant assignments based on observable and internal shift scores.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "name": "user_id",
+          "description": "An anonymized user identifier.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "quadrant",
+          "description": "Quadrant label in the internal-output shift space.",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "d_out",
+          "description": "Observable output shift score.",
+          "dataType": "sc:Float"
+        },
+        {
+          "@type": "cr:Field",
+          "name": "d_in",
+          "description": "Internal representation shift score.",
+          "dataType": "sc:Float"
+        }
+      ]
+    }
+  ],
+  "rai:dataCollection": {
+    "@type": "rai:DataCollection",
+    "rai:collectionMethod": "The smoke artifact is derived from public recommendation benchmark sources and generated model outputs. User identifiers in the smoke files are anonymized and do not correspond to author identities.",
+    "rai:dataSource": "MovieLens, Goodreads Book Graph, and Steam recommendation data sources are used in the full benchmark pipeline. The smoke artifact includes a lightweight anonymized subset for review.",
+    "rai:collectionTimeframe": "Prepared for artifact review in 2026."
+  },
+  "rai:dataUse": {
+    "@type": "rai:DataUse",
+    "rai:intendedUse": "Research and artifact review for auditing hidden-output fairness gaps in LLM recommender evaluations.",
+    "rai:outOfScopeUse": "The artifact is not intended for deployment as a production recommender system, user profiling system, or decision-making system.",
+    "rai:datasetRestrictions": "The smoke package is intended for non-commercial research and review use. Original source datasets may impose their own license and usage restrictions."
+  },
+  "rai:dataBiases": {
+    "@type": "rai:DataBiases",
+    "rai:knownBiases": "The artifact evaluates counterfactual demographic cues in recommendation prompts. Source recommendation datasets and LLM outputs may reflect historical, cultural, popularity, and demographic biases. Smoke samples are not statistically representative of all users or domains.",
+    "rai:mitigationStrategies": "The pipeline uses counterfactual prompt pairs and reports both observable output shift and internal representation shift to make hidden-output mismatches more visible. The smoke artifact is for verification, not for estimating population-level fairness claims."
+  },
+  "rai:ethicalConsiderations": {
+    "@type": "rai:EthicalConsiderations",
+    "rai:personalSensitiveInformation": "The smoke files use anonymized user identifiers. Protected-attribute information is introduced synthetically through prompt cues rather than inferred from real users.",
+    "rai:risks": "Potential risks include overinterpreting smoke-test results, treating synthetic counterfactual cues as real demographic labels, or using the benchmark as a production fairness certification.",
+    "rai:limitations": "Smoke files are small and intended for reproducibility checks only. Full benchmark conclusions require the complete experimental setup described in the paper."
+  }
+}

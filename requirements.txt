@@ -1,10 +1,10 @@
-numpy
-pandas
-scipy
-scikit-learn
-tqdm
-torch
-transformers
-accelerate
-sentencepiece
-protobuf
+numpy>=1.24
+pandas>=2.0
+scikit-learn>=1.3
+torch>=2.1
+transformers>=4.40
+accelerate>=0.29
+safetensors>=0.4
+
+# Optional: only needed for rebuilding the SteamReviews subset from Kaggle.
+kaggle>=1.6

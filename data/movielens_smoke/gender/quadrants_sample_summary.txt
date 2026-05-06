@@ -1,0 +1,28 @@
+Quadrants Summary (2D Joint Otsu)
+============================================================
+Users scored: 4832
+Merge coverage: output=4832 | internal=4832 | intersection=4832 | only_output=0 | only_internal=0
+Threshold tx (d_out): 0.453125
+Threshold ty (d_in):  0.008186
+Otsu bins:            128
+Otsu score:           0.074946196602
+
+Global statistics
+------------------------------------------------------------
+d_out  mean±std: 0.314280 ± 0.311053 | median=0.194460
+d_in   mean±std: 0.006627 ± 0.004721 | median=0.005140
+
+Quadrant counts
+------------------------------------------------------------
+Q1: n=  929 | prop=0.192260 | d_out mean=0.770712 | d_in mean=0.004069
+Q2: n=  389 | prop=0.080505 | d_out mean=0.742152 | d_in mean=0.012554
+Q3: n= 2538 | prop=0.525248 | d_out mean=0.137885 | d_in mean=0.004211
+Q4: n=  976 | prop=0.201987 | d_out mean=0.167994 | d_in mean=0.012980
+
+Definitions
+------------------------------------------------------------
+Q1 = high output, low internal
+Q2 = high output, high internal
+Q3 = low output, low internal
+Q4 = low output, high internal
+
