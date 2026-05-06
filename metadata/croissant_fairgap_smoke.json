@@ -42,7 +42,8 @@
     "source": "cr:source",
     "subField": "cr:subField",
     "transform": "cr:transform",
-    "dct": "http://purl.org/dc/terms/"
+    "dct": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#"
   },
   "@type": "sc:Dataset",
   "name": "FairGap Smoke Artifact",
@@ -494,15 +495,109 @@
     "rai:outOfScopeUse": "The artifact is not intended for deployment as a production recommender system, user profiling system, or decision-making system.",
     "rai:datasetRestrictions": "The smoke package is intended for non-commercial research and review use. Original source datasets may impose their own license and usage restrictions."
   },
-  "rai:dataBiases": {
-    "@type": "rai:DataBiases",
-    "rai:knownBiases": "The artifact evaluates counterfactual demographic cues in recommendation prompts. Source recommendation datasets and LLM outputs may reflect historical, cultural, popularity, and demographic biases. Smoke samples are not statistically representative of all users or domains.",
-    "rai:mitigationStrategies": "The pipeline uses counterfactual prompt pairs and reports both observable output shift and internal representation shift to make hidden-output mismatches more visible. The smoke artifact is for verification, not for estimating population-level fairness claims."
-  },
+  "rai:dataBiases": "{\"@type\": \"rai:DataBiases\", \"rai:knownBiases\": \"The artifact evaluates counterfactual demographic cues in recommendation prompts. Source recommendation datasets and LLM outputs may reflect historical, cultural, popularity, and demographic biases. Smoke samples are not statistically representative of all users or domains.\", \"rai:mitigationStrategies\": \"The pipeline uses counterfactual prompt pairs and reports both observable output shift and internal representation shift to make hidden-output mismatches more visible. The smoke artifact is for verification, not for estimating population-level fairness claims.\"}",
   "rai:ethicalConsiderations": {
     "@type": "rai:EthicalConsiderations",
     "rai:personalSensitiveInformation": "The smoke files use anonymized user identifiers. Protected-attribute information is introduced synthetically through prompt cues rather than inferred from real users.",
     "rai:risks": "Potential risks include overinterpreting smoke-test results, treating synthetic counterfactual cues as real demographic labels, or using the benchmark as a production fairness certification.",
     "rai:limitations": "Smoke files are small and intended for reproducibility checks only. This Croissant metadata validates the included MovieLens/Gender smoke subset. Other benchmark conditions follow the same schema but are not enumerated as record-generating Croissant RecordSets unless their files are included. Full benchmark conclusions require the complete experimental setup described in the paper."
-  }
+  },
+  "rai:dataLimitations": "{\"@type\": \"rai:DataLimitations\", \"rai:limitations\": \"This artifact is a lightweight smoke-test subset intended for reproducibility checking of the FairGap metric pipeline. It validates the included MovieLens/Gender smoke subset and does not provide statistically representative coverage of all users, recommendation domains, demographic groups, datasets, or model families. Other benchmark conditions follow the same schema but are not enumerated as record-generating Croissant RecordSets unless their files are included. The artifact is not recommended for production recommendation, user profiling, demographic inference, fairness certification, safety-critical decision-making, or population-level fairness claims without the complete benchmark setup and additional validation.\"}",
+  "rai:personalSensitiveInformation": "{\"@type\": \"rai:PersonalSensitiveInformation\", \"rai:containsPersonalSensitiveInformation\": \"The smoke files use anonymized user identifiers. They do not contain author identities, real names, contact information, institutional affiliation, or verified demographic labels of real users. Protected-attribute information is introduced synthetically through counterfactual prompt cues for benchmark evaluation purposes. The prompts may include synthetic cues related to gender, race, and age in the full benchmark design, but these cues should not be interpreted as verified personal or sensitive attributes of real individuals.\"}",
+  "rai:dataUseCases": "{\"@type\": \"rai:DataUseCases\", \"rai:useCases\": \"This smoke artifact is intended to represent and validate the computational pipeline used by FairGap: construction of counterfactual recommendation prompts, generation and parsing of ranked recommendation lists, computation of observable output shift, computation of internal representation shift, and assignment of hidden-output quadrants. Validated use cases are lightweight artifact review, pipeline reproducibility checking, and inspection of precomputed intermediate metric files. The smoke subset is not validated for model training, production recommendation, demographic inference, fairness certification, or population-level claims about recommender fairness.\"}",
+  "rai:dataSocialImpact": "{\"@type\": \"rai:DataSocialImpact\", \"rai:positiveImpacts\": \"The artifact can support more transparent review of fairness-evaluation pipelines for LLM-based recommendation systems by making both observable output shifts and internal representation shifts inspectable. It may help reviewers and researchers identify cases where output-only audits miss hidden-output mismatch patterns.\", \"rai:negativeImpacts\": \"Potential risks include overinterpreting a small smoke subset as representative, treating synthetic protected-attribute cues as verified demographic labels, or using the artifact as evidence of production-ready fairness certification. These risks are mitigated by limiting the artifact to anonymized smoke files, documenting out-of-scope uses, and explicitly stating that full fairness conclusions require the complete benchmark setup described in the paper.\"}",
+  "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
+  "rai:hasSyntheticData": true,
+  "prov:wasDerivedFrom": [
+    {
+      "@id": "https://grouplens.org/datasets/movielens/",
+      "prov:label": "MovieLens",
+      "prov:wasAttributedTo": {
+        "@id": "https://grouplens.org/",
+        "prov:label": "GroupLens Research"
+      }
+    },
+    {
+      "@id": "https://sites.google.com/eng.ucsd.edu/ucsdbookgraph/home",
+      "prov:label": "Goodreads Book Graph",
+      "prov:wasAttributedTo": {
+        "@id": "https://cseweb.ucsd.edu/~jmcauley/",
+        "prov:label": "UCSD McAuley Lab"
+      }
+    },
+    {
+      "@id": "https://cseweb.ucsd.edu/~jmcauley/datasets.html#steam_data",
+      "prov:label": "Steam recommendation data",
+      "prov:wasAttributedTo": {
+        "@id": "https://cseweb.ucsd.edu/~jmcauley/",
+        "prov:label": "UCSD McAuley Lab"
+      }
+    }
+  ],
+  "prov:wasGeneratedBy": [
+    {
+      "@type": "prov:Activity",
+      "prov:type": {
+        "@id": "https://www.wikidata.org/wiki/Q4929239"
+      },
+      "prov:label": "Data collection from public recommendation datasets",
+      "sc:description": "The full FairGap pipeline uses public recommendation benchmark sources, including MovieLens, Goodreads Book Graph, and Steam recommendation data. The current Croissant file is scoped to the included MovieLens/Gender smoke subset.",
+      "prov:wasAttributedTo": [
+        {
+          "@type": "prov:SoftwareAgent",
+          "@id": "fairgap_preprocessing_pipeline",
+          "prov:label": "FairGap preprocessing pipeline",
+          "sc:description": "Automated scripts used to construct smoke-test artifact files."
+        }
+      ]
+    },
+    {
+      "@type": "prov:Activity",
+      "prov:type": {
+        "@id": "https://www.wikidata.org/wiki/Q5227332"
+      },
+      "prov:label": "Preprocessing and anonymization",
+      "sc:description": "Public recommendation records were filtered and converted into anonymized user-profile records containing top-rated items and genre summaries. Smoke-test user identifiers were replaced with anonymized IDs.",
+      "prov:wasAttributedTo": [
+        {
+          "@type": "prov:SoftwareAgent",
+          "@id": "fairgap_preprocessing_pipeline",
+          "prov:label": "FairGap preprocessing pipeline",
+          "sc:description": "Automated scripts used to prepare anonymized profile and sample files."
+        }
+      ]
+    },
+    {
+      "@type": "prov:Activity",
+      "prov:type": {
+        "@id": "https://www.wikidata.org/wiki/Q5227332"
+      },
+      "prov:label": "Synthetic counterfactual prompt construction",
+      "sc:description": "Counterfactual prompt pairs were constructed by holding recommendation preferences constant while varying protected-attribute cues. These cues are synthetic experimental conditions and should not be interpreted as verified demographic attributes of real users.",
+      "prov:wasAttributedTo": [
+        {
+          "@type": "prov:SoftwareAgent",
+          "@id": "fairgap_prompt_construction_pipeline",
+          "prov:label": "FairGap prompt-construction pipeline",
+          "sc:description": "Automated scripts used to create counterfactual prompt pairs."
+        }
+      ]
+    },
+    {
+      "@type": "prov:Activity",
+      "prov:type": {
+        "@id": "https://www.wikidata.org/wiki/Q3306762"
+      },
+      "prov:label": "Model generation and metric computation",
+      "sc:description": "LLM outputs were generated from counterfactual prompts, parsed into ranked recommendation lists, and scored using observable output-shift metrics, internal representation-shift metrics, and hidden-output quadrant assignment. The smoke artifact includes precomputed intermediate files for lightweight review.",
+      "prov:wasAttributedTo": [
+        {
+          "@type": "prov:SoftwareAgent",
+          "@id": "fairgap_evaluation_pipeline",
+          "prov:label": "FairGap evaluation pipeline",
+          "sc:description": "Automated scripts used for output parsing, metric computation, and quadrant assignment."
+        }
+      ]
+    }
+  ]
 }
