@@ -41,12 +41,13 @@
     "separator": "cr:separator",
     "source": "cr:source",
     "subField": "cr:subField",
-    "transform": "cr:transform"
+    "transform": "cr:transform",
+    "dct": "http://purl.org/dc/terms/"
   },
   "@type": "sc:Dataset",
   "name": "FairGap Smoke Artifact",
   "alternateName": "FairGap lightweight review package",
-  "description": "A lightweight smoke-test artifact for FairGap, a benchmark pipeline for auditing hidden-output fairness gaps in LLM-based recommendation. The artifact contains cleaned reproduction scripts, small anonymized sample files, and precomputed metric outputs for validating the metric pipeline without rerunning full LLM generation or hidden-state extraction.",
+  "description": "A lightweight smoke-test artifact for FairGap, a benchmark pipeline for auditing hidden-output fairness gaps in LLM-based recommendation. This Croissant metadata validates the included MovieLens/Gender smoke subset and accompanying reproduction scripts. Other benchmark conditions follow the same schema but are not enumerated as record-generating Croissant RecordSets unless their files are included.",
   "url": "https://anonymous.4open.science/r/FairAnonymous-BBE6/",
   "version": "1.0.0",
   "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
@@ -306,6 +307,6 @@
     "@type": "rai:EthicalConsiderations",
     "rai:personalSensitiveInformation": "The smoke files use anonymized user identifiers. Protected-attribute information is introduced synthetically through prompt cues rather than inferred from real users.",
     "rai:risks": "Potential risks include overinterpreting smoke-test results, treating synthetic counterfactual cues as real demographic labels, or using the benchmark as a production fairness certification.",
-    "rai:limitations": "Smoke files are small and intended for reproducibility checks only. Full benchmark conclusions require the complete experimental setup described in the paper."
+    "rai:limitations": "Smoke files are small and intended for reproducibility checks only. This Croissant metadata validates the included MovieLens/Gender smoke subset. Other benchmark conditions follow the same schema but are not enumerated as record-generating Croissant RecordSets unless their files are included. Full benchmark conclusions require the complete experimental setup described in the paper."
   }
 }
