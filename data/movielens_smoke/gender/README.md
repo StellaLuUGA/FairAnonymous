@@ -1,9 +1,9 @@
 # movielens_smoke / gender smoke-test files
 
-This folder is reserved for lightweight FairGap smoke-test files for the
+This folder contains lightweight FairGap smoke-test files for the
 `movielens_smoke` domain and `gender` counterfactual attribute setting.
 
-Expected files may include:
+Included files:
 
 - profiles_sample.jsonl
 - pairs_sample.jsonl
@@ -15,5 +15,7 @@ Expected files may include:
 - match10_sample.eval.jsonl
 - fairgap_records_sample.jsonl
 
-These files are intended for verifying the metric pipeline, not for reproducing
-the full benchmark estimates.
+These files are intended for verifying the FairGap data schema and metric
+pipeline, not for reproducing the full benchmark estimates. Raw generations,
+hidden vectors, full user-level outputs, and large intermediate files are
+intentionally excluded from the anonymous artifact.
