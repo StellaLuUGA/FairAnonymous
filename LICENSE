@@ -2,15 +2,22 @@ Artifact Review License
 
 Copyright (c) 2026 Anonymous Authors.
 
-This artifact is provided solely for confidential review and reproducibility
-evaluation for the NeurIPS 2026 submission process. Reviewers and authorized
-artifact evaluators may inspect, run, and evaluate the code, smoke-test data,
-precomputed results, and metadata only for this purpose.
+This artifact, including all code, scripts, smoke-test data, precomputed
+results, metadata, documentation, and associated files, is provided solely for
+confidential review and reproducibility evaluation by authorized reviewers,
+area chairs, senior area chairs, and artifact evaluators for the NeurIPS 2026
+submission process.
 
-No redistribution, publication, sublicensing, public release, commercial use,
-production use, demographic inference, fairness certification, or automated
-decision-making use is permitted without explicit written permission from the
-authors.
+Authorized reviewers and evaluators may inspect and execute the artifact only
+to assess the associated NeurIPS 2026 submission. No other use is permitted
+without explicit written permission from the authors.
+
+The artifact may not be copied, redistributed, published, sublicensed, modified
+for public release, retained beyond the review process, incorporated into other
+datasets or software, used to train or evaluate models outside the review
+process, used for commercial purposes, or used for any independent research,
+benchmarking, production recommendation, demographic inference, fairness
+certification, or automated decision-making purpose.
 
 Any derived or sampled materials from MovieLens, Goodreads Book Graph, Steam,
 or other public recommendation sources remain subject to the licenses, terms of
