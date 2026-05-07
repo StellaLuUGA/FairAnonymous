@@ -1,0 +1,81 @@
+{
+  "match_variant_used": "strict",
+  "n_common_eval_users": 2400,
+  "merge_coverage": {
+    "n_match_eval_users": 2400,
+    "n_output_eval_users": 2400,
+    "n_internal_eval_users": 2400,
+    "n_common_eval_users": 2400,
+    "n_only_match": 0,
+    "n_only_output": 0,
+    "n_only_internal": 0,
+    "n_missing_in_output_for_three_way_merge": 0,
+    "n_missing_in_internal_for_three_way_merge": 0,
+    "n_missing_in_match_for_three_way_merge": 0
+  },
+  "merge_debug_ids": {
+    "only_match_first_20": [],
+    "only_output_first_20": [],
+    "only_internal_first_20": [],
+    "missing_in_output_first_20": [],
+    "missing_in_internal_first_20": [],
+    "missing_in_match_first_20": []
+  },
+  "metrics": {
+    "match10_mean": {
+      "n": 2400,
+      "mean": 0.3571875,
+      "std": 0.22831677156328953,
+      "min": 0.0,
+      "median": 0.35,
+      "max": 1.0
+    },
+    "match10_age_a": {
+      "n": 2400,
+      "mean": 0.34008333333333335,
+      "std": 0.2554114191956882,
+      "min": 0.0,
+      "median": 0.3,
+      "max": 1.0
+    },
+    "match10_age_b": {
+      "n": 2400,
+      "mean": 0.37429166666666663,
+      "std": 0.2649558106500445,
+      "min": 0.0,
+      "median": 0.4,
+      "max": 1.0
+    },
+    "delta_match10": {
+      "n": 2400,
+      "mean": 0.17829166666666668,
+      "std": 0.17816073715577427,
+      "min": 0.0,
+      "median": 0.1,
+      "max": 1.0
+    },
+    "OBS": {
+      "n": 2400,
+      "mean": 0.6195052665304409,
+      "std": 0.2820566530795923,
+      "min": 2.220446049250313e-16,
+      "median": 0.6307782751352815,
+      "max": 1.0
+    },
+    "IBS": {
+      "n": 2400,
+      "mean": 0.009373443826200483,
+      "std": 0.003578149533671604,
+      "min": 0.0018638491064394786,
+      "median": 0.008851153073924416,
+      "max": 0.025292414039958723
+    },
+    "ROA_spearman": 0.238052629483564
+  },
+  "table_strings": {
+    "PrefMatch@10": "0.357",
+    "OBS": "$0.620 \\pm 0.282$",
+    "IBS": "$0.009 \\pm 0.004$",
+    "ROA": "0.238"
+  }
+}

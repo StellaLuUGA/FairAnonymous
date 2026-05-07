@@ -1,0 +1,81 @@
+{
+  "match_variant_used": "strict",
+  "n_common_eval_users": 4832,
+  "merge_coverage": {
+    "n_match_eval_users": 4832,
+    "n_output_eval_users": 4832,
+    "n_internal_eval_users": 4832,
+    "n_common_eval_users": 4832,
+    "n_only_match": 0,
+    "n_only_output": 0,
+    "n_only_internal": 0,
+    "n_missing_in_output_for_three_way_merge": 0,
+    "n_missing_in_internal_for_three_way_merge": 0,
+    "n_missing_in_match_for_three_way_merge": 0
+  },
+  "merge_debug_ids": {
+    "only_match_first_20": [],
+    "only_output_first_20": [],
+    "only_internal_first_20": [],
+    "missing_in_output_first_20": [],
+    "missing_in_internal_first_20": [],
+    "missing_in_match_first_20": []
+  },
+  "metrics": {
+    "match10_mean": {
+      "n": 4832,
+      "mean": 0.41628725165562913,
+      "std": 0.20524385497023442,
+      "min": 0.0,
+      "median": 0.4,
+      "max": 1.0
+    },
+    "match10_female": {
+      "n": 4832,
+      "mean": 0.458567880794702,
+      "std": 0.22749048891001045,
+      "min": 0.0,
+      "median": 0.5,
+      "max": 1.0
+    },
+    "match10_male": {
+      "n": 4832,
+      "mean": 0.3740066225165563,
+      "std": 0.26779979169701285,
+      "min": 0.0,
+      "median": 0.4,
+      "max": 1.0
+    },
+    "delta_match10": {
+      "n": 4832,
+      "mean": 0.22243377483443713,
+      "std": 0.19002885085500518,
+      "min": 0.0,
+      "median": 0.19999999999999996,
+      "max": 1.0
+    },
+    "OBS": {
+      "n": 4832,
+      "mean": 0.7316904891134047,
+      "std": 0.3044165560738084,
+      "min": 2.220446049250313e-16,
+      "median": 0.8611800913828244,
+      "max": 1.0
+    },
+    "IBS": {
+      "n": 4832,
+      "mean": 0.0065747116316218135,
+      "std": 0.004428081545870672,
+      "min": 0.000871217512348166,
+      "median": 0.005297650726966559,
+      "max": 0.03167529127424168
+    },
+    "ROA_spearman": 0.5209021958954916
+  },
+  "table_strings": {
+    "PrefMatch@10": "$0.416 \\pm 0.205$",
+    "OBS": "$0.732 \\pm 0.304$",
+    "IBS": "$0.007 \\pm 0.004$",
+    "ROA": "0.521"
+  }
+}

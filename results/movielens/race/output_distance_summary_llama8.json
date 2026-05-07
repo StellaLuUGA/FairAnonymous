@@ -1,0 +1,35 @@
+{
+  "k": 10,
+  "p": 0.9,
+  "rbo_normalization": {
+    "method": "divide_by_max_rbo",
+    "max_rbo": 0.651322,
+    "note": "identical lists -> RBO=1.0, d_out=0.0"
+  },
+  "users_seen": 6040,
+  "pairs_scored": 6040,
+  "missing_split": 0,
+  "missing_pair": 0,
+  "rows_written_dev": 1208,
+  "rows_written_eval": 4832,
+  "dev": {
+    "d_out": {
+      "n": 1208,
+      "mean": 0.7180675546386922,
+      "std": 0.3082931989757935,
+      "min": 2.220446049250313e-16,
+      "median": 0.8180140572538634,
+      "max": 1.0
+    }
+  },
+  "eval": {
+    "d_out": {
+      "n": 4832,
+      "mean": 0.7316904891134047,
+      "std": 0.3044165560738084,
+      "min": 2.220446049250313e-16,
+      "median": 0.8611800913828244,
+      "max": 1.0
+    }
+  }
+}

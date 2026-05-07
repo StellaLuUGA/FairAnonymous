@@ -1,0 +1,102 @@
+{
+  "match_variant_used": "strict",
+  "n_common_eval_users": 4288,
+  "merge_coverage": {
+    "n_match_eval_users": 4288,
+    "n_output_eval_users": 4832,
+    "n_internal_eval_users": 4832,
+    "n_common_eval_users": 4288,
+    "n_only_match": 0,
+    "n_only_output": 0,
+    "n_only_internal": 0,
+    "n_missing_in_output_for_three_way_merge": 0,
+    "n_missing_in_internal_for_three_way_merge": 0,
+    "n_missing_in_match_for_three_way_merge": 544
+  },
+  "merge_debug_ids": {
+    "only_match_first_20": [],
+    "only_output_first_20": [],
+    "only_internal_first_20": [],
+    "missing_in_output_first_20": [],
+    "missing_in_internal_first_20": [],
+    "missing_in_match_first_20": [
+      3,
+      7,
+      8,
+      18,
+      26,
+      52,
+      61,
+      80,
+      124,
+      161,
+      164,
+      187,
+      198,
+      201,
+      239,
+      245,
+      304,
+      307,
+      334,
+      335
+    ]
+  },
+  "metrics": {
+    "match10_mean": {
+      "n": 4288,
+      "mean": 0.026982276119402987,
+      "std": 0.0822918998165451,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.9
+    },
+    "match10_female": {
+      "n": 4288,
+      "mean": 0.026259328358208954,
+      "std": 0.09653898711082853,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.9
+    },
+    "match10_male": {
+      "n": 4288,
+      "mean": 0.027705223880597013,
+      "std": 0.09481499489159485,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.9
+    },
+    "delta_match10": {
+      "n": 4288,
+      "mean": 0.02803171641791045,
+      "std": 0.09352970097363772,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.9
+    },
+    "OBS": {
+      "n": 4288,
+      "mean": 0.28759855463589956,
+      "std": 0.2992150322540083,
+      "min": 2.220446049250313e-16,
+      "median": 0.16907421889786067,
+      "max": 1.0
+    },
+    "IBS": {
+      "n": 4288,
+      "mean": 0.006582555064831227,
+      "std": 0.004673217574706208,
+      "min": 0.000629010339723725,
+      "median": 0.0051422496115124065,
+      "max": 0.03647416641820398
+    },
+    "ROA_spearman": 0.06350747593133842
+  },
+  "table_strings": {
+    "PrefMatch@10": "0.027",
+    "OBS": "$0.288 \\pm 0.299$",
+    "IBS": "$0.007 \\pm 0.005$",
+    "ROA": "0.064"
+  }
+}

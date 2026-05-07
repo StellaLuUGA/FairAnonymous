@@ -1,0 +1,96 @@
+{
+  "k": 10,
+  "users_with_ranked_rows": 3000,
+  "pairs_scored": 3000,
+  "missing_split": 0,
+  "missing_profile": 0,
+  "missing_pair": 0,
+  "parse_failed_skipped": 0,
+  "rows_written_dev": 600,
+  "rows_written_eval": 2400,
+  "catalog_sources": {
+    "catalog_jsonl": "",
+    "catalog_csv": "",
+    "fallback_profiles_used": true
+  },
+  "title_resolution": {
+    "total_titles_used_age_a": 29836,
+    "total_titles_used_age_b": 29848,
+    "total_resolved_age_a": 10074,
+    "total_resolved_age_b": 11177,
+    "total_unresolved_age_a": 19762,
+    "total_unresolved_age_b": 18671,
+    "unresolved_rate_age_a": 0.6623542029762702,
+    "unresolved_rate_age_b": 0.6255360493165372,
+    "resolved_rate_age_a": 0.3376457970237297,
+    "resolved_rate_age_b": 0.3744639506834629
+  },
+  "dev": {
+    "match10_mean_strict": {
+      "n": 600,
+      "mean": 0.33308333333333334,
+      "std": 0.21420704872207688,
+      "min": 0.0,
+      "median": 0.30000000000000004,
+      "max": 1.0
+    },
+    "match10_mean_resolved": {
+      "n": 600,
+      "mean": 0.8464914021164021,
+      "std": 0.3035576206175755,
+      "min": 0.0,
+      "median": 1.0,
+      "max": 1.0
+    },
+    "delta_match10_strict": {
+      "n": 600,
+      "mean": 0.17450000000000002,
+      "std": 0.18903196378743287,
+      "min": 0.0,
+      "median": 0.1,
+      "max": 1.0
+    },
+    "delta_match10_resolved": {
+      "n": 600,
+      "mean": 0.14431878306878307,
+      "std": 0.34632364144554245,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 1.0
+    }
+  },
+  "eval": {
+    "match10_mean_strict": {
+      "n": 2400,
+      "mean": 0.3571875,
+      "std": 0.22831677156328953,
+      "min": 0.0,
+      "median": 0.35,
+      "max": 1.0
+    },
+    "match10_mean_resolved": {
+      "n": 2400,
+      "mean": 0.8665823412698413,
+      "std": 0.27469611556168855,
+      "min": 0.0,
+      "median": 1.0,
+      "max": 1.0
+    },
+    "delta_match10_strict": {
+      "n": 2400,
+      "mean": 0.17829166666666665,
+      "std": 0.1781607371557743,
+      "min": 0.0,
+      "median": 0.1,
+      "max": 1.0
+    },
+    "delta_match10_resolved": {
+      "n": 2400,
+      "mean": 0.15451455026455027,
+      "std": 0.3558120188273782,
+      "min": 0.0,
+      "median": 0.0,
+      "max": 1.0
+    }
+  }
+}
