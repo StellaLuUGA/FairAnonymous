@@ -1,0 +1,36 @@
+condition:
+  domain: movielens_smoke
+  attribute: gender
+  model_alias: llama8
+  model_name: meta-llama/Llama-3.1-8B-Instruct
+
+data:
+  smoke_dir: data/movielens_smoke/gender
+  profiles: data/movielens_smoke/gender/profiles_sample.jsonl
+  pairs: data/movielens_smoke/gender/pairs_sample.jsonl
+  generations: data/movielens_smoke/gender/generations_sample.jsonl
+  ranked_lists: data/movielens_smoke/gender/ranked_lists_sample.jsonl
+  split: data/movielens_smoke/gender/split_sample.jsonl
+
+metrics:
+  top_k: 10
+  rbo_p: 0.9
+  relative_layers: [0.25, 0.50, 0.75, 1.00]
+  output_distance: data/movielens_smoke/gender/output_distance_sample.eval.jsonl
+  internal_distance_layers: data/movielens_smoke/gender/internal_distance_layers_sample.eval.jsonl
+  internal_distance: data/movielens_smoke/gender/internal_distance_sample.eval.jsonl
+  match10: data/movielens_smoke/gender/match10_sample.eval.jsonl
+  quadrants: data/movielens_smoke/gender/quadrants_sample.jsonl
+
+inference:
+  max_new_tokens: 160
+  do_sample: false
+  temperature: 0.0
+  top_p: 1.0
+  dtype: bfloat16
+  device_map: auto
+  seed_base: 1234
+
+notes:
+  scope: lightweight smoke-test subset for artifact review
+  full_benchmark: not included in this config
