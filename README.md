@@ -14,9 +14,7 @@ The same two files are also available under `data/`.
 
 These files summarize smoke-sample records across Goodreads, MovieLens, and
 SteamReviews. Each row includes `user_id`, `dataset`, `attribute`, `obs`, `ibs`,
-and a derived diagnostic `quadrant` label (Q1–Q4). The quadrant labels are
-computed from observable output shift (OBS) and internal representation shift
-(IBS); they are not human-annotated ground-truth fairness labels.
+and a derived diagnostic `quadrant` label (Q1–Q4). 
 
 ## Artifact scope
 
