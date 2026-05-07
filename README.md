@@ -13,28 +13,31 @@ counterfactual settings:
 
 For review, this artifact provides:
 
-1. Evaluation scripts for the FairGap pipeline.
-2. A lightweight smoke-test instance for validating the metric pipeline, with
-   folder structure for all nine domain-attribute settings.
-3. Precomputed summary files for artifact inspection when provided.
-4. Responsible AI notes and metadata for the included benchmark artifact.
+- Evaluation scripts for the FairGap pipeline.
+- Lightweight smoke-test records for all nine domain-attribute settings.
+- Selected MovieLens summary result files for artifact inspection.
+- Configuration examples for representative smoke-test runs.
+- Responsible AI notes and Croissant metadata for the included benchmark artifact.
 
-The smoke-test files are intended to verify the metric pipeline without requiring
-reviewers to rerun full LLM generation or hidden-state extraction. Full-scale
-reproduction requires the original public recommendation datasets and the
-corresponding open-weight LLM checkpoints.
+The smoke-test files are intended to verify the file schema and metric pipeline
+without requiring reviewers to rerun full LLM generation or hidden-state
+extraction. Full-scale reproduction requires the original public recommendation
+datasets and the corresponding open-weight LLM checkpoints.
 
-## FairGap record
+## FairGap records
 
-A FairGap record consists of:
+The lightweight smoke-test folders include records for:
 
-- an anonymized user/profile identifier,
-- a counterfactual prompt pair,
-- paired recommendation lists,
-- output-side shift scores,
-- internal representation shift scores,
-- Match@10 utility scores,
-- and quadrant labels for hidden-output mismatch analysis.
+- anonymized user/profile identifiers,
+- counterfactual prompt pairs,
+- parsed paired recommendation lists,
+- observable output-shift scores,
+- internal representation-shift scores,
+- Match@10 utility scores, and
+- compact joined FairGap records combining Match@10, output shift, and internal shift.
+
+Summary-level hidden-output quadrant diagnostics are provided in the selected
+result summaries under `results/`.
 
 Demographic cues are synthetic counterfactual prompt perturbations used for
 auditing model behavior. They should not be interpreted as verified or inferred
@@ -44,16 +47,21 @@ protected attributes of real users.
 
 - `scripts/`: core FairGap evaluation scripts.
 - `configs/`: example configuration files.
-- `data/`: smoke-test benchmark records for each domain-attribute condition.
-- `results/`: summary files for the reported benchmark tables and robustness checks.
+- `data/`: lightweight smoke-test records for each domain-attribute condition.
+- `results/`: selected MovieLens summary result files.
 - `metadata/`: Responsible AI notes and Croissant metadata.
 
 ## Reproducibility
 
-The included smoke-test files allow reviewers to run the metric aggregation
-steps, including output-shift scoring, internal-shift aggregation, quadrant
-assignment, and main metric summarization. Full benchmark reproduction requires
-external public datasets and model checkpoints.
+The included smoke-test files allow reviewers to inspect the data schema and run
+metric aggregation steps such as output-shift scoring, internal-shift
+aggregation, Match@10 scoring, quadrant summarization, and main metric
+summarization.
+
+Full benchmark reproduction requires external public datasets, open-weight model
+checkpoints, and GPU resources. The smoke artifact includes precomputed
+intermediate files so reviewers can verify the downstream metric pipeline
+without rerunning full generation or hidden-state extraction.
 
 ## Anonymity
 
@@ -61,21 +69,18 @@ This artifact has been prepared for double-blind review. Author names,
 institutional identifiers, local paths, and private credentials should not
 appear in the repository.
 
-## Internal probe re-fitting note
+## Internal representation note
 
-For lightweight review, we provide precomputed `probe_weights.json` and
-`internal_distance_sample.eval.jsonl`. Re-fitting probe weights requires
-`internal_vectors.npz`, which is omitted from the smoke-test package because it
-contains large hidden-state arrays.
+For lightweight review, the artifact provides precomputed internal-distance
+files such as `internal_distance_sample.eval.jsonl` and
+`internal_distance_layers_sample.eval.jsonl`. Full hidden-state arrays are
+omitted because they are large and expensive to regenerate.
 
 ## Goodreads data source
 
 The Goodreads profile builder expects locally downloaded Goodreads Book Graph
-files. The source page is:
-https://cseweb.ucsd.edu/~jmcauley/datasets/goodreads.html
-
-For lightweight review, precomputed Goodreads smoke-test profiles are provided
-under `data/goodreads_smoke/`.
+files. For lightweight review, precomputed Goodreads smoke-test profiles are
+provided under `data/goodreads_smoke/`.
 
 ## GPU-dependent generation and hidden-state extraction
 
