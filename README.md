@@ -3,9 +3,22 @@
 This repository contains the anonymized artifact for FairGap, a benchmark for
 auditing hidden-output fairness gaps in LLM-based recommenders.
 
-## Artifact scope
+## Cross-domain quadrant annotation files
 
-The full FairGap benchmark is organized as a domain × attribute × model evaluation design. The released smoke-test data preserve the domain × attribute structure for schema and pipeline verification, while selected summary files illustrate the result format used in the full benchmark.
+For quick inspection, the repository root contains two consolidated files:
+
+- `fairgap_allrecords_with_quadrants.jsonl`
+- `fairgap_allrecords_with_quadrants.csv`
+
+The same two files are also available under `data/`.
+
+These files summarize smoke-sample records across Goodreads, MovieLens, and
+SteamReviews. Each row includes `user_id`, `dataset`, `attribute`, `obs`, `ibs`,
+and a derived diagnostic `quadrant` label (Q1–Q4). The quadrant labels are
+computed from observable output shift (OBS) and internal representation shift
+(IBS); they are not human-annotated ground-truth fairness labels.
+
+## Artifact scope
 
 FairGap evaluates three recommendation domains and three protected-attribute
 counterfactual settings:
