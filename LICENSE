@@ -1,41 +1,21 @@
-MIT License for Code
+Artifact Review License
 
-Copyright (c) 2026 Anonymous Authors
+Copyright (c) 2026 Anonymous Authors.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of the software scripts and associated documentation files in this repository
-(the "Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish, distribute,
-and sublicense copies of the Software, subject to the following conditions:
+This artifact is provided solely for confidential review and reproducibility
+evaluation for the NeurIPS 2026 submission process. Reviewers and authorized
+artifact evaluators may inspect, run, and evaluate the code, smoke-test data,
+precomputed results, and metadata only for this purpose.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+No redistribution, publication, sublicensing, public release, commercial use,
+production use, demographic inference, fairness certification, or automated
+decision-making use is permitted without explicit written permission from the
+authors.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Any derived or sampled materials from MovieLens, Goodreads Book Graph, Steam,
+or other public recommendation sources remain subject to the licenses, terms of
+use, and redistribution conditions of the original source datasets.
 
-Data and Metadata License
-
-The lightweight smoke-test data files, precomputed result files, and metadata
-files included in this artifact are released for non-commercial research and
-artifact-review use under the Creative Commons Attribution-NonCommercial-
-ShareAlike 4.0 International License (CC BY-NC-SA 4.0), unless otherwise
-specified by the original source datasets.
-
-Original Source Dataset Terms
-
-This artifact may include derived or sampled materials from public
-recommendation benchmark sources such as MovieLens, Goodreads Book Graph, and
-Steam recommendation data. Users who reconstruct or extend the full benchmark
-from the original datasets are responsible for complying with the licenses,
-terms of use, and redistribution conditions of those original data sources.
-
-No Warranty
-
-The artifact is provided for research and reproducibility purposes only. It is
-not intended for production recommendation, demographic inference, fairness
-certification, or automated decision-making.
+THE ARTIFACT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. THE AUTHORS SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY ARISING FROM OR IN CONNECTION WITH THE ARTIFACT OR ITS USE.
