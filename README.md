@@ -5,6 +5,8 @@ auditing hidden-output fairness gaps in LLM-based recommenders.
 
 ## Artifact scope
 
+The full FairGap benchmark is organized as a domain × attribute × model evaluation design. The released smoke-test data preserve the domain × attribute structure for schema and pipeline verification, while selected summary files illustrate the result format used in the full benchmark.
+
 FairGap evaluates three recommendation domains and three protected-attribute
 counterfactual settings:
 
