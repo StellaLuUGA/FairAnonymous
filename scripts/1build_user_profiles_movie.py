@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 """
-build_movielens_user_profiles.py
+Download MovieLens-1M and build movie-only user profiles.
 
-Build per-user movie-only profiles from MovieLens-1M.
-
-Inputs
-------
-- users.dat
-- ratings.dat
-- movies.dat
+This script is a lightweight preprocessing step for movie recommendation
+experiments. It automatically downloads the standard MovieLens-1M dataset,
+extracts the required files, and exports attribute-neutral movie-history
+profiles.
 
 Output
 ------
@@ -19,80 +18,164 @@ Each JSONL row contains:
 - top_rated_movies: list of {movie_id, title, rating, timestamp, genres}
 - genre_summary, if requested
 
+Important design choice
+-----------------------
+Although users.dat contains gender, age, occupation, and zip code, this script
+only uses users.dat to enumerate valid user IDs. Demographic fields are not
+exported into profiles.jsonl. Downstream counterfactual prompts can inject
+protected-attribute cues separately, so the movie-history profile remains
+attribute-neutral.
+
 Construction rule
 -----------------
-- Keep only users with at least a specified number of valid historical interactions.
+- Keep only users with at least --min_interactions valid historical ratings.
 - A valid interaction means the rated movie exists in movies.dat.
-- Retain up to top_n items per user using deterministic ranking.
+- Retain up to --top_n items per user using deterministic ranking:
+  rating descending, timestamp descending.
 
 Example
 -------
 python scripts/1build_user_profiles.py \
-  --movies raw/ml-1m/movies.dat \
-  --ratings raw/ml-1m/ratings.dat \
-  --users raw/ml-1m/users.dat \
-  --out data/movielens_smoke/gender/profiles_sample.jsonl \
+  --data_dir data/raw \
+  --out data/movielens/gender/profiles.jsonl \
   --top_n 20 \
   --min_interactions 10 \
   --include_genre_summary
 """
 
-from __future__ import annotations
-
 import argparse
 import json
-import os
+import shutil
+import urllib.request
+import zipfile
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Dict, List, Tuple
 
 
-@dataclass
+MOVIELENS_1M_URL = "https://files.grouplens.org/datasets/movielens/ml-1m.zip"
+
+
+@dataclass(frozen=True)
 class Movie:
     movie_id: int
     title: str
     genres: List[str]
 
 
-def parse_movies(movies_path: str) -> Dict[int, Movie]:
+def ensure_parent_dir(path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+
+def download_movielens_1m(data_dir: Path, force: bool = False) -> Path:
+    """
+    Download and extract MovieLens-1M.
+
+    Parameters
+    ----------
+    data_dir:
+        Directory where the zip file and extracted ml-1m folder will be stored.
+    force:
+        If True, re-download and re-extract the dataset.
+
+    Returns
+    -------
+    Path to the extracted ml-1m directory.
+    """
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    zip_path = data_dir / "ml-1m.zip"
+    extract_dir = data_dir / "ml-1m"
+
+    required_files = [
+        extract_dir / "movies.dat",
+        extract_dir / "ratings.dat",
+        extract_dir / "users.dat",
+    ]
+
+    if extract_dir.exists() and all(p.exists() for p in required_files) and not force:
+        print(f"[OK] MovieLens-1M already exists: {extract_dir}")
+        return extract_dir
+
+    if force and extract_dir.exists():
+        shutil.rmtree(extract_dir)
+
+    if force and zip_path.exists():
+        zip_path.unlink()
+
+    if not zip_path.exists():
+        print(f"[INFO] Downloading MovieLens-1M from: {MOVIELENS_1M_URL}")
+        urllib.request.urlretrieve(MOVIELENS_1M_URL, zip_path)
+        print(f"[OK] Downloaded to: {zip_path}")
+
+    print(f"[INFO] Extracting: {zip_path}")
+    with zipfile.ZipFile(zip_path, "r") as zip_ref:
+        zip_ref.extractall(data_dir)
+
+    missing = [str(p) for p in required_files if not p.exists()]
+    if missing:
+        raise FileNotFoundError(
+            "MovieLens-1M extraction completed, but required files are missing:\n"
+            + "\n".join(f"  - {p}" for p in missing)
+        )
+
+    print(f"[OK] Extracted MovieLens-1M to: {extract_dir}")
+    return extract_dir
+
+
+def parse_movies(movies_path: Path) -> Dict[int, Movie]:
     movies: Dict[int, Movie] = {}
-    with open(movies_path, "r", encoding="latin-1") as f:
+
+    with movies_path.open("r", encoding="latin-1") as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
+
             parts = line.split("::")
             if len(parts) != 3:
                 continue
-            mid = int(parts[0])
+
+            movie_id = int(parts[0])
             title = parts[1]
             genres = parts[2].split("|") if parts[2] else []
-            movies[mid] = Movie(movie_id=mid, title=title, genres=genres)
+
+            movies[movie_id] = Movie(
+                movie_id=movie_id,
+                title=title,
+                genres=genres,
+            )
+
     return movies
 
 
-def parse_users(users_path: str) -> Dict[int, Dict[str, int]]:
+def parse_users(users_path: Path) -> List[int]:
     """
     users.dat format:
       UserID::Gender::Age::Occupation::Zip-code
 
-    We only keep user IDs so output stays movie-only.
+    This function intentionally keeps only user IDs. Demographic fields are
+    not exported into the movie-history profiles.
     """
-    users: Dict[int, Dict[str, int]] = {}
-    with open(users_path, "r", encoding="latin-1") as f:
+    user_ids: List[int] = []
+
+    with users_path.open("r", encoding="latin-1") as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
+
             parts = line.split("::")
             if len(parts) != 5:
                 continue
-            uid = int(parts[0])
-            users[uid] = {"user_id": uid}
-    return users
+
+            user_ids.append(int(parts[0]))
+
+    return sorted(set(user_ids))
 
 
-def parse_ratings(ratings_path: str) -> Dict[int, List[Tuple[int, int, int]]]:
+def parse_ratings(ratings_path: Path) -> Dict[int, List[Tuple[int, int, int]]]:
     """
     ratings.dat format:
       UserID::MovieID::Rating::Timestamp
@@ -101,46 +184,49 @@ def parse_ratings(ratings_path: str) -> Dict[int, List[Tuple[int, int, int]]]:
       ratings_by_user[user_id] = list of (movie_id, rating, timestamp)
     """
     ratings_by_user: Dict[int, List[Tuple[int, int, int]]] = defaultdict(list)
-    with open(ratings_path, "r", encoding="latin-1") as f:
+
+    with ratings_path.open("r", encoding="latin-1") as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
+
             parts = line.split("::")
             if len(parts) != 4:
                 continue
-            uid = int(parts[0])
-            mid = int(parts[1])
+
+            user_id = int(parts[0])
+            movie_id = int(parts[1])
             rating = int(parts[2])
-            ts = int(parts[3])
-            ratings_by_user[uid].append((mid, rating, ts))
+            timestamp = int(parts[3])
+
+            ratings_by_user[user_id].append((movie_id, rating, timestamp))
+
     return ratings_by_user
 
 
-def select_top_n(ratings: List[Tuple[int, int, int]], n: int) -> List[Tuple[int, int, int]]:
+def select_top_n(
+    ratings: List[Tuple[int, int, int]],
+    n: int,
+) -> List[Tuple[int, int, int]]:
     """
     Select Top-N movies with a deterministic rule:
-    - group by rating desc
-    - within each rating group, sort by timestamp desc
-    - take first N from concatenated groups
+    1. rating descending;
+    2. timestamp descending within the same rating.
     """
-    buckets: Dict[int, List[Tuple[int, int, int]]] = defaultdict(list)
-    for mid, rating, ts in ratings:
-        buckets[rating].append((mid, rating, ts))
-
-    selected: List[Tuple[int, int, int]] = []
-    for rating in [5, 4, 3, 2, 1]:
-        if rating not in buckets:
-            continue
-        bucket = sorted(buckets[rating], key=lambda x: x[2], reverse=True)
-        selected.extend(bucket)
-        if len(selected) >= n:
-            break
-    return selected[:n]
+    return sorted(
+        ratings,
+        key=lambda x: (x[1], x[2]),
+        reverse=True,
+    )[:n]
 
 
-def make_genre_summary(top_movies: List[Dict], normalize: bool = True) -> Dict[str, float]:
+def make_genre_summary(
+    top_movies: List[Dict],
+    normalize: bool = True,
+) -> Dict[str, float]:
     counter = Counter()
+
     for movie in top_movies:
         for genre in movie.get("genres", []):
             if genre:
@@ -153,75 +239,152 @@ def make_genre_summary(top_movies: List[Dict], normalize: bool = True) -> Dict[s
         return dict(counter)
 
     total = sum(counter.values())
-    return {genre: round(count / total, 6) for genre, count in counter.most_common()}
+
+    return {
+        genre: round(count / total, 6)
+        for genre, count in counter.most_common()
+    }
 
 
-def ensure_dir(path: str) -> None:
-    if path:
-        os.makedirs(path, exist_ok=True)
+def build_profiles(
+    ml1m_dir: Path,
+    out_path: Path,
+    top_n: int,
+    min_interactions: int,
+    include_genre_summary: bool,
+) -> None:
+    movies_path = ml1m_dir / "movies.dat"
+    ratings_path = ml1m_dir / "ratings.dat"
+    users_path = ml1m_dir / "users.dat"
 
+    required_files = [movies_path, ratings_path, users_path]
+    missing = [str(p) for p in required_files if not p.exists()]
+    if missing:
+        raise FileNotFoundError(
+            "Missing required MovieLens-1M file(s):\n"
+            + "\n".join(f"  - {p}" for p in missing)
+        )
 
-def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--movies", required=True, help="Path to MovieLens movies.dat")
-    ap.add_argument("--ratings", required=True, help="Path to MovieLens ratings.dat")
-    ap.add_argument("--users", required=True, help="Path to MovieLens users.dat")
-    ap.add_argument("--out", required=True, help="Output profiles JSONL")
-    ap.add_argument("--top_n", type=int, default=20, help="Top-N movies per user after filtering")
-    ap.add_argument("--min_interactions", type=int, default=10, help="Minimum number of valid interactions required")
-    ap.add_argument("--include_genre_summary", action="store_true", help="Add normalized genre distribution")
-    args = ap.parse_args()
+    ensure_parent_dir(out_path)
 
-    ensure_dir(os.path.dirname(args.out))
-
-    movies = parse_movies(args.movies)
-    users = parse_users(args.users)
-    ratings_by_user = parse_ratings(args.ratings)
+    movies = parse_movies(movies_path)
+    user_ids = parse_users(users_path)
+    ratings_by_user = parse_ratings(ratings_path)
 
     written = 0
     skipped_too_sparse = 0
+    skipped_no_valid_ratings = 0
 
-    with open(args.out, "w", encoding="utf-8") as out_f:
-        for uid in sorted(users.keys()):
-            user_ratings = ratings_by_user.get(uid, [])
+    with out_path.open("w", encoding="utf-8") as out_f:
+        for user_id in user_ids:
+            user_ratings = ratings_by_user.get(user_id, [])
 
             valid_ratings = [
-                (mid, rating, ts)
-                for mid, rating, ts in user_ratings
-                if mid in movies
+                (movie_id, rating, timestamp)
+                for movie_id, rating, timestamp in user_ratings
+                if movie_id in movies
             ]
 
-            if len(valid_ratings) < args.min_interactions:
+            if not valid_ratings:
+                skipped_no_valid_ratings += 1
+                continue
+
+            if len(valid_ratings) < min_interactions:
                 skipped_too_sparse += 1
                 continue
 
-            top_raw = select_top_n(valid_ratings, args.top_n)
+            top_raw = select_top_n(valid_ratings, top_n)
+
             top_movies = []
-            for mid, rating, ts in top_raw:
-                movie = movies[mid]
+            for movie_id, rating, timestamp in top_raw:
+                movie = movies[movie_id]
                 top_movies.append(
                     {
                         "movie_id": movie.movie_id,
                         "title": movie.title,
                         "rating": rating,
-                        "timestamp": ts,
+                        "timestamp": timestamp,
                         "genres": movie.genres,
                     }
                 )
 
             profile = {
-                "user_id": uid,
+                "user_id": user_id,
                 "top_rated_movies": top_movies,
             }
 
-            if args.include_genre_summary:
-                profile["genre_summary"] = make_genre_summary(top_movies, normalize=True)
+            if include_genre_summary:
+                profile["genre_summary"] = make_genre_summary(
+                    top_movies,
+                    normalize=True,
+                )
 
             out_f.write(json.dumps(profile, ensure_ascii=False) + "\n")
             written += 1
 
-    print(f"[OK] Wrote {written} user profiles to: {args.out}")
-    print(f"[OK] Skipped {skipped_too_sparse} users with < {args.min_interactions} valid interactions")
+    print(f"[OK] Input directory: {ml1m_dir}")
+    print(f"[OK] Wrote {written} user profiles to: {out_path}")
+    print(
+        f"[OK] Skipped {skipped_too_sparse} users with "
+        f"< {min_interactions} valid interactions"
+    )
+    print(f"[OK] Skipped {skipped_no_valid_ratings} users with no valid ratings")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Download MovieLens-1M and build movie-only user profiles."
+        )
+    )
+
+    parser.add_argument(
+        "--data_dir",
+        default="data/raw",
+        help="Directory for downloaded and extracted MovieLens-1M files.",
+    )
+    parser.add_argument(
+        "--force_download",
+        action="store_true",
+        help="Re-download and re-extract MovieLens-1M even if files already exist.",
+    )
+    parser.add_argument(
+        "--out",
+        required=True,
+        help="Output profiles JSONL.",
+    )
+    parser.add_argument(
+        "--top_n",
+        type=int,
+        default=20,
+        help="Top-N movies per user after filtering.",
+    )
+    parser.add_argument(
+        "--min_interactions",
+        type=int,
+        default=10,
+        help="Minimum number of valid interactions required.",
+    )
+    parser.add_argument(
+        "--include_genre_summary",
+        action="store_true",
+        help="Add normalized genre distribution to each user profile.",
+    )
+
+    args = parser.parse_args()
+
+    ml1m_dir = download_movielens_1m(
+        data_dir=Path(args.data_dir),
+        force=args.force_download,
+    )
+
+    build_profiles(
+        ml1m_dir=ml1m_dir,
+        out_path=Path(args.out),
+        top_n=args.top_n,
+        min_interactions=args.min_interactions,
+        include_genre_summary=args.include_genre_summary,
+    )
 
 
 if __name__ == "__main__":
